@@ -49,3 +49,46 @@ class Equipamento:
             "tipo": self.tipo,
             "quantidade": self.quantidade,
         }
+
+class GerenciadorStand:
+    
+    @staticmethod
+    def _aguardar():
+        input("\nPressione ENTER para continuar...")
+
+    @staticmethod
+    def _get_clientes_obj():
+        dados = _carregar_dados(CLIENTES_FILE)
+        clientes_ajustados = []
+        for d in dados:
+            clientes_ajustados.append(Cliente(d['id'], d['nome'], d['cpf']))
+        return clientes_ajustados
+
+    @staticmethod
+    def _get_equipamentos_obj():
+        dados = _carregar_dados(ESTOQUE_FILE)
+        return [Equipamento(**d) for d in dados]
+
+    @staticmethod
+    def _salvar_clientes(clientes_obj):
+        clientes_dict = [c.to_dict() for c in clientes_obj]
+        _salvar_dados(CLIENTES_FILE, clientes_dict)
+
+    @staticmethod
+    def _salvar_equipamentos(equipamentos_obj):
+        equipamentos_dict = [e.to_dict() for e in equipamentos_obj]
+        _salvar_dados(ESTOQUE_FILE, equipamentos_dict)
+
+    @classmethod
+    def _buscar_cliente(cls, clientes, id_procurado):
+        for cliente in clientes:
+            if cliente.id == id_procurado.upper():
+                return cliente
+        return None
+        
+    @classmethod
+    def _buscar_equipamento(cls, equipamentos, id_procurado):
+        for eq in equipamentos:
+            if eq.id == id_procurado.upper():
+                return eq
+        return None
