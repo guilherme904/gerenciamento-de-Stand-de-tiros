@@ -92,3 +92,38 @@ class GerenciadorStand:
             if eq.id == id_procurado.upper():
                 return eq
         return None
+
+    @classmethod
+    def cadastrar_cliente(cls):
+        clientes = cls._get_clientes_obj()
+
+        print("\n--- Cadastro de Novo Cliente ---")
+        id_novo = input("ID do Cliente (Curto Ex: C001): ").upper()
+        nome = input("Nome do Cliente: ")
+        cpf = input("CPF do Cliente: ")
+        
+        if cls._buscar_cliente(clientes, id_novo):
+            print(f"❌ Erro: ID {id_novo} já está em uso.")
+            cls._aguardar()
+            return
+            
+        novo_cliente = Cliente(id_novo, nome, cpf)
+        clientes.append(novo_cliente)
+        cls._salvar_clientes(clientes)
+        print(f"\n✅ Cliente '{nome}' cadastrado com sucesso! ID: \033[92m{novo_cliente.id}\033[0m")
+        cls._aguardar()
+
+    @classmethod
+    def listar_clientes(cls):
+        clientes = cls._get_clientes_obj()
+        
+        if not clientes:
+            print("\n🚨 Nenhum cliente cadastrado.")
+            cls._aguardar()
+            return
+            
+        print("\n\033[34m### Clientes Cadastrados ###\033[0m")
+        for cliente in clientes:
+            print(f"ID: {cliente.id} | Nome: {cliente.nome} | CPF: {cliente.cpf}")
+        print("----------------------------")
+        cls._aguardar()
