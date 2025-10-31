@@ -1,1 +1,0 @@
-# gerenciamento-de-Stand-de-tiros
