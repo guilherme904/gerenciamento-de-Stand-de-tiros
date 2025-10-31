@@ -127,3 +127,50 @@ class GerenciadorStand:
             print(f"ID: {cliente.id} | Nome: {cliente.nome} | CPF: {cliente.cpf}")
         print("----------------------------")
         cls._aguardar()
+
+    @classmethod
+    def cadastrar_equipamento(cls):
+        equipamentos = cls._get_equipamentos_obj()
+
+        print("\n--- Cadastro de Equipamento/Munição ---")
+        id_novo = input("ID do Equipamento (Curto Ex: E01): ").upper()
+        nome = input("Nome do Item: ")
+        tipo = input("Tipo (Arma ou Munição): ").capitalize()
+        
+        if tipo not in ["Arma", "Munição"]:
+            print("❌ Tipo inválido.")
+            cls._aguardar()
+            return
+        
+        try:
+            quantidade = int(input("Quantidade inicial em estoque: "))
+        except ValueError:
+            print("❌ Quantidade inválida.")
+            cls._aguardar()
+            return
+        
+        if cls._buscar_equipamento(equipamentos, id_novo):
+            print(f"❌ Erro: ID {id_novo} já está em uso.")
+            cls._aguardar()
+            return
+            
+        novo_equipamento = Equipamento(id_novo, nome, tipo, quantidade) 
+        equipamentos.append(novo_equipamento)
+        cls._salvar_equipamentos(equipamentos)
+        print(f"\n✅ {nome} adicionado. ID: \033[92m{novo_equipamento.id}\033[0m")
+        cls._aguardar()
+
+    @classmethod
+    def listar_estoque(cls):
+        equipamentos = cls._get_equipamentos_obj()
+        
+        if not equipamentos:
+            print("\n🚨 Estoque vazio.")
+            cls._aguardar()
+            return
+            
+        print("\n\033[34m### Estoque Atual ###\033[0m")
+        for eq in equipamentos:
+            print(f"ID: {eq.id} | {eq.nome} ({eq.tipo}): {eq.quantidade} em estoque")
+        print("----------------------")
+        cls._aguardar()
