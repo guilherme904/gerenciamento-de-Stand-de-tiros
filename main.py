@@ -28,3 +28,28 @@ def menu():
         0️⃣  - \033[91mSair\033[0m
         __________________________________________________________
         """)
+
+        OP = input("Escolha uma opção: ")
+
+        if OP == "1":
+            GerenciadorStand.cadastrar_cliente()
+
+        elif OP == "2":
+            GerenciadorStand.listar_clientes()
+
+        elif OP == "3":
+            GerenciadorStand.cadastrar_equipamento()
+
+        elif OP == "5":
+            GerenciadorStand.listar_estoque()
+            
+        elif OP == "0":
+            print("Saindo do Sistema...")
+            break
+        else:
+            print("❌ Opção inválida, tente novamente.")
+            GerenciadorStand._aguardar()
+
+
+if __name__ == "__main__":
+    menu()
